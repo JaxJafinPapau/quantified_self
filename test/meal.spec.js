@@ -37,6 +37,43 @@ describe('api', () => {
                   expect(response.body).toHaveProperty("message", message);
                 })
       })
+
+      test('incorrect meal id; failure', async function(){
+        let meal = await Meal.create({"name":"breakfast"});
+        let food = await Food.create({"name":"food1", "calories":100});
+
+        return request(app)
+                .post(`/api/v1/meals/${meal.id+5}/foods/${food.id}`)
+                .then(response => {
+                  expect(response.statusCode).toBe(404);
+                  expect(response.body).toHaveProperty("error", "Invalid Parameters");
+                })
+      })
+
+      test('incorrect food id; failure', async function(){
+        let meal = await Meal.create({"name":"breakfast"});
+        let food = await Food.create({"name":"food1", "calories":100});
+
+        return request(app)
+                .post(`/api/v1/meals/${meal.id}/foods/${food.id + 5}`)
+                .then(response => {
+                  expect(response.statusCode).toBe(404);
+                  expect(response.body).toHaveProperty("error", "Invalid Parameters");
+                })
+      })
+
+      test('incorrect meal and food ids; failure', async function(){
+        let meal = await Meal.create({"name":"breakfast"});
+        let food = await Food.create({"name":"food1", "calories":100});
+
+        return request(app)
+                .post(`/api/v1/meals/${meal.id + 5}/foods/${food.id + 5}`)
+                .then(response => {
+                  expect(response.statusCode).toBe(404);
+                  expect(response.body).toHaveProperty("error", "Invalid Parameters");
+                })
+      })
+
     })
   })
 
