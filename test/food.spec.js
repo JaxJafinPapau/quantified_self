@@ -57,5 +57,21 @@ describe('api', () => {
                 expect(response.body[1]).toHaveProperty('id',2);
               })
     })
+
+    test('GET /api/v1/foods/:id', async function(){
+      let banana_params = {"name": "Banana", "calories": 150, "id" : 1};
+      let apple_params = {"name": "Apple", "calories": 100, "id" : 2};
+      let banana = await Food.create(banana_params);
+      let apple = await Food.create(apple_params);
+
+      return request(app)
+              .get('/api/v1/foods/1')
+              .then(response => {
+                expect(response.statusCode).toBe(200);
+                expect(response.body[0]).toHaveProperty('id', 1);
+                expect(response.body[1]).toHaveProperty('name',"Banana");
+                expect(response.body[1]).toHaveProperty('calories',"150");
+              })
+    })
   })
 })
