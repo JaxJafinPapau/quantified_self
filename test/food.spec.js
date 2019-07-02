@@ -43,18 +43,18 @@ describe('api', () => {
     })
 
     test('GET /api/v1/foods', async function(){
-      let banana = {"name": "Banana", "calories": 150, "id" : 1};
-      let apple = {"name": "Apple", "calories": 100, "id" : 2};
-      await Food.create(banana);
-      await Food.create(apple);
+      let banana_params = {"name": "Banana", "calories": 150, "id" : 1};
+      let apple_params = {"name": "Apple", "calories": 100, "id" : 2};
+      let banana = await Food.create(banana_params);
+      let apple = await Food.create(apple_params);
 
       return request(app)
-              .get('api/v1/foods')
+              .get('/api/v1/foods')
               .then(response => {
                 expect(response.statusCode).toBe(200);
                 expect(response.body).toHaveLength(2);
-                expect(response.body).toContainEqual(banana);
-                expect(response.body).toContainEqual(apple);
+                expect(response.body[0]).toHaveProperty('id', 1);
+                expect(response.body[1]).toHaveProperty('id',2);
               })
     })
   })
