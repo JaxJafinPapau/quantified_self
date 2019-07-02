@@ -32,4 +32,15 @@ router.get('/', async function(req, res, next){
   }
 })
 
+router.get('/:id', async function(req, res, next){
+  try {
+    let food = await Food.findByPk(req.params.id);
+    res.setHeader(...defaultHeader);
+    res.status(200).send(JSON.stringify(food));
+  } catch (error) {
+    res.setHeader(...defaultHeader);
+    res.status(400).send(error);
+  }
+})
+
 module.exports = router

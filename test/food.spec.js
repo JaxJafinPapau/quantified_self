@@ -68,9 +68,9 @@ describe('api', () => {
               .get('/api/v1/foods/1')
               .then(response => {
                 expect(response.statusCode).toBe(200);
-                expect(response.body[0]).toHaveProperty('id', 1);
-                expect(response.body[1]).toHaveProperty('name',"Banana");
-                expect(response.body[1]).toHaveProperty('calories',"150");
+                expect(response.body).toHaveProperty('id', 1);
+                expect(response.body).toHaveProperty('name',"Banana");
+                expect(response.body).toHaveProperty('calories',150);
               })
     })
   })
