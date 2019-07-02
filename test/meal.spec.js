@@ -28,11 +28,12 @@ describe('api', () => {
       test('success', async function() {
         let meal = await Meal.create({"name":"breakfast"});
         let food = await Food.create({"name":"food1", "calories":100});
+
         let message = `Successfully added ${food.name} to ${meal.name}`
         return request(app)
                 .post(`/api/v1/meals/${meal.id}/foods/${food.id}`)
                 .then(response => {
-                  expect(response.statusCode).toBe(204);
+                  expect(response.statusCode).toBe(201);
                   expect(response.body).toHaveProperty("message", message);
                 })
       })
