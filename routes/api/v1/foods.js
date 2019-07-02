@@ -31,11 +31,16 @@ router.get('/', async function(req, res, next){
 router.get('/:id', async function(req, res, next){
   try {
     let food = await Food.findByPk(req.params.id);
-    res.setHeader(...defaultHeader);
-    res.status(200).send(JSON.stringify(food));
+    if(food != null) {
+      res.setHeader(...defaultHeader);
+      res.status(200).send(JSON.stringify(food));
+    } else {
+      // proceed to catch block
+      reject();
+    }
   } catch (error) {
     res.setHeader(...defaultHeader);
-    res.status(400).send(error);
+    res.status(400).send({ error: "Invalid food ID" });
   }
 })
 
