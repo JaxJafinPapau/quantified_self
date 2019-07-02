@@ -41,5 +41,21 @@ describe('api', () => {
                 expect(response.body).toHaveProperty('calories', 150);
       })
     })
+
+    test('GET /api/v1/foods', async function(){
+      let banana = {"name": "Banana", "calories": 150, "id" : 1};
+      let apple = {"name": "Apple", "calories": 100, "id" : 2};
+      await Food.create(banana);
+      await Food.create(apple);
+
+      return request(app)
+              .get('api/v1/foods')
+              .then(response => {
+                expect(response.statusCode).toBe(200);
+                expect(response.body).toHaveLength(2);
+                expect(response.body).toContainEqual(banana);
+                expect(response.body).toContainEqual(apple);
+              })
+    })
   })
 })
