@@ -41,6 +41,22 @@ describe('api', () => {
                 expect(response.body).toHaveProperty('calories', 150);
       })
     })
+    // sad path
+    test('POST /api/v1/foods with incorrect params', () => {
+      let body = {
+        "food" : {
+          "name" : "Banana"
+        }
+      };
+
+      return request(app)
+              .post('/api/v1/foods')
+              .send(body)
+              .then(response => {
+                expect(response.statusCode).toBe(400);
+                expect(response.body).toHaveProperty('error', "Invalid Parameters");
+      })
+    })
 
     test('GET /api/v1/foods', async function(){
       let banana_params = {"name": "Banana", "calories": 150, "id" : 1};
