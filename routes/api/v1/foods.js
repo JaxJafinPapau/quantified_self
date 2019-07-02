@@ -47,15 +47,21 @@ router.get('/:id', async function(req, res, next){
 router.patch('/:id', async function(req, res, next){
   try {
     let food = await Food.findByPk(req.params.id)
-    let new_food = await food.update({
-      name: req.body.food.name,
-      calories: req.body.food.calories
-    });
-    if(new_food != null) {
-      res.setHeader(...defaultHeader);
-      res.status(200).send(JSON.stringify(new_food))
+    let name = req.body.food.name
+    let calories = req.body.food.calories
+    if(name, calories == undefined ) {
+      reject()
     } else {
-      reject();
+      let new_food = await food.update({
+        name: name,
+        calories: calories
+      });
+      if(new_food != null) {
+        res.setHeader(...defaultHeader);
+        res.status(200).send(JSON.stringify(new_food))
+      } else {
+        reject();
+      }
     }
   } catch {
     res.setHeader(...defaultHeader);
