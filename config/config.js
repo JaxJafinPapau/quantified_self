@@ -1,6 +1,9 @@
-{
+const dotenv = require('dotenv');
+dotenv.config();
+
+var config = {
   "development": {
-    "username": "jaxjafinpapau",
+    "username": process.env.DB_USERNAME,
     "password": null,
     "database": "quantified_self_development",
     "host": "127.0.0.1",
@@ -8,7 +11,7 @@
     "operatorsAliases": false
   },
   "test": {
-    "username": "jaxjafinpapau",
+    "username": process.env.DB_USERNAME,
     "password": null,
     "database": "quantified_self_test",
     "host": "127.0.0.1",
@@ -21,4 +24,6 @@
     "operatorsAliases": false,
     "use_env_variable": "DATABASE_URL"
   }
-}
+};
+
+module.exports = config;
