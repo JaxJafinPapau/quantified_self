@@ -3,14 +3,7 @@ var request = require("supertest");
 var app = require('../app');
 var Food = require('../models').Food;
 var Meal = require('../models').Meal;
-
-// describe('Test the root path', () => {
-//   test('It should respond to the GET method', () => {
-//     return request(app).get("/").then(response => {
-//       expect(response.statusCode).toBe(200)
-//     })
-//   });
-// });
+var MealFood = require('../models').MealFood;
 
 describe('api', () => {
   beforeAll(() => {
@@ -32,9 +25,15 @@ describe('api', () => {
         let message = `Successfully added ${food.name} to ${meal.name}`
         return request(app)
                 .post(`/api/v1/meals/${meal.id}/foods/${food.id}`)
-                .then(response => {
+                .then(async function(response) {
                   expect(response.statusCode).toBe(201);
                   expect(response.body).toHaveProperty("message", message);
+                  let r = await Food.findByPk(1);
+                  let relation = await MealFood.findOne({where: {
+                    MealId: meal.id,
+                    FoodId: food.id
+                  }})
+                  expect(relation).not.toBe(null);
                 })
       })
 
