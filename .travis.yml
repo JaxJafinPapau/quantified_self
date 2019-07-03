@@ -3,3 +3,5 @@ node_js:
 - lts/*
 script:
 - npm test a
+env:
+- jest
