@@ -1,8 +1,11 @@
 language: node_js
 node_js:
 - 10.16.0
-cache: npm
+cache:
+- npm
+- 'node_modules'
 before_script:
 - npm install
+- npm i --save
 script:
 - jest test
