@@ -2,8 +2,6 @@ var shell = require('shelljs');
 var request = require("supertest");
 var app = require('../app');
 var Food = require('../models').Food;
-var Meal = require('../models').Meal;
-var MealFood = require('../models').MealFood;
 
 describe('api', () => {
   beforeAll(() => {
