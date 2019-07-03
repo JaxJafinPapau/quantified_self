@@ -1,13 +1,4 @@
 language: node_js
 node_js:
 - 10.16.0
-cache:
-- npm
-- 'node_modules'
-env:
-- NODE_ENV=TEST
-before_script:
-- npm install
-- npm i --save
-script:
-- jest test
+- lts/*
