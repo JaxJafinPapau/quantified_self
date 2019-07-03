@@ -3,6 +3,6 @@ node_js:
 - 10.16.0
 cache: npm
 before_script:
-- npm ci
+- npm install
 script:
 - npm test a
