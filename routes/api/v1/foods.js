@@ -69,4 +69,17 @@ router.patch('/:id', async function(req, res, next){
   }
 })
 
+router.delete('/:id', async function(req, res, next){
+  try {
+    let food = await Food.findByPk(req.params.id);
+    console.log("Error yet?")
+    food.destroy();
+    res.setHeader(...defaultHeader);
+    res.status(204).send({e:"Something"});
+  } catch (error) {
+    res.setHeader(...defaultHeader);
+    res.status(404).send({e:"Something"});
+  }
+})
+
 module.exports = router
