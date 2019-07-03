@@ -169,5 +169,27 @@ describe('api', () => {
                 expect(response.body).toHaveProperty('error', "Food not found.");
       })
     })
+    test('DELETE /api/v1/foods/:id with valid ID', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+
+      return request(app)
+              .delete(`/api/v1/foods/${banana.id}`)
+              .send()
+              .then(response => {
+                expect(response.statusCode).toBe(204);
+      })
+    })
+    test('DELETE /api/v1/foods/:id with invalid ID', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+
+      return request(app)
+              .delete(`/api/v1/foods/52234`)
+              .send()
+              .then(response => {
+                expect(response.statusCode).toBe(404);
+      })
+    })
   })
 })
