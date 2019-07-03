@@ -96,6 +96,7 @@ describe('api', () => {
       let banana = await Food.create(banana_params);
       let apple = await Food.create(apple_params);
 
+
       return request(app)
               .get('/api/v1/foods/100')
               .then(response => {
@@ -167,6 +168,32 @@ describe('api', () => {
               .then(response => {
                 expect(response.statusCode).toBe(400);
                 expect(response.body).toHaveProperty('error', "Food not found.");
+      })
+    })
+    test('DELETE /api/v1/foods/:id with valid ID', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+      let allFoods = await Food.findAll()
+      let foodCount = allFoods.length
+
+      return request(app)
+              .delete(`/api/v1/foods/${banana.id}`)
+              .send()
+              .then(async function(response) {
+                expect(response.statusCode).toBe(204)
+                let updatedFoodCount = await Food.findAll()
+                expect(updatedFoodCount.length).toBe((foodCount - 1))
+                })
+    })
+    test('DELETE /api/v1/foods/:id with invalid ID', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+
+      return request(app)
+              .delete(`/api/v1/foods/52234`)
+              .send()
+              .then(response => {
+                expect(response.statusCode).toBe(404);
       })
     })
   })
