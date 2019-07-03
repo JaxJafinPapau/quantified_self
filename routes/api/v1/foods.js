@@ -44,4 +44,29 @@ router.get('/:id', async function(req, res, next){
   }
 })
 
+router.patch('/:id', async function(req, res, next){
+  try {
+    let food = await Food.findByPk(req.params.id)
+    if(food == null) { throw "Food not found." }
+    let name = req.body.food.name
+    let calories = req.body.food.calories
+    if(name == undefined || calories == undefined ) {
+      throw "Name or calories missing.";
+    }
+    let new_food = await food.update({
+      name: name,
+      calories: calories
+    });
+    if(new_food != null) {
+      res.setHeader(...defaultHeader);
+      res.status(200).send(JSON.stringify(new_food))
+    } else {
+      throw "Update failed."
+    }
+  } catch(error) {
+    res.setHeader(...defaultHeader);
+    res.status(400).send({ error: error });
+  }
+})
+
 module.exports = router

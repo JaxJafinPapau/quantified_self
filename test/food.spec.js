@@ -103,5 +103,71 @@ describe('api', () => {
                 expect(response.body).toHaveProperty('error', "Invalid food ID");
               })
     })
+
+    test('PATCH /api/v1/foods/:id with valid body', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+
+      let new_banana_params = {"name": "Plantain", "calories": 90};
+      let body = {
+        "food" : new_banana_params
+      };
+      return request(app)
+              .patch(`/api/v1/foods/${banana.id}`)
+              .send(body)
+              .then(response => {
+                expect(response.statusCode).toBe(200);
+                expect(response.body).toHaveProperty('name', 'Plantain');
+                expect(response.body).toHaveProperty('calories', 90);
+      })
+    })
+    test('PATCH /api/v1/foods/:id with no calories', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+
+      let new_banana_params = {"name": "Plantain"};
+      let body = {
+        "food" : new_banana_params
+      };
+      return request(app)
+              .patch(`/api/v1/foods/${banana.id}`)
+              .send(body)
+              .then(response => {
+                expect(response.statusCode).toBe(400);
+                expect(response.body).toHaveProperty('error', "Name or calories missing.");
+      })
+    })
+    test('PATCH /api/v1/foods/:id with no name', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+
+      let new_banana_params = {"calories": 1};
+      let body = {
+        "food" : new_banana_params
+      };
+      return request(app)
+              .patch(`/api/v1/foods/${banana.id}`)
+              .send(body)
+              .then(response => {
+                expect(response.statusCode).toBe(400);
+                expect(response.body).toHaveProperty('error', "Name or calories missing.");
+      })
+    })
+    test('PATCH /api/v1/foods/:id with invalid ID', async function(){
+      let banana_params = {"name": "Banana", "calories": 150};
+      let banana = await Food.create(banana_params);
+
+      let new_banana_params = {"name": "Plantain", "calories": 90};
+      let body = {
+        "food" : new_banana_params
+      };
+      return request(app)
+              .patch(`/api/v1/foods/1000`)
+              .send(body)
+              .then(response => {
+                expect(response.statusCode).toBe(400);
+                expect(response.body).toHaveProperty('error', "Food not found.");
+      })
+    })
   })
 })
