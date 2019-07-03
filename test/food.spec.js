@@ -170,7 +170,7 @@ describe('api', () => {
                 expect(response.body).toHaveProperty('error', "Food not found.");
       })
     })
-    test.only('DELETE /api/v1/foods/:id with valid ID', async function(){
+    test('DELETE /api/v1/foods/:id with valid ID', async function(){
       let banana_params = {"name": "Banana", "calories": 150};
       let banana = await Food.create(banana_params);
       let allFoods = await Food.findAll()
