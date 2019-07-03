@@ -4,6 +4,8 @@ node_js:
 cache:
 - npm
 - 'node_modules'
+env:
+- NODE_ENV=TEST
 before_script:
 - npm install
 - npm i --save
