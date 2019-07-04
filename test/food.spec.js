@@ -23,6 +23,10 @@ describe('api', () => {
   afterEach(() => {
     shell.exec('npx sequelize db:migrate:undo:all')
   });
+  afterAll(() => {
+    shell.exec('npx sequelize db:migrate:undo:all');
+    app.close();
+  })
 
   describe('Test Food Paths', () => {
     test('POST /api/v1/foods with correct params', () => {
