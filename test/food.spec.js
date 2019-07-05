@@ -44,7 +44,7 @@ describe('api', () => {
                 expect(response.statusCode).toBe(201);
                 expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('name', 'Banana');
-                expect(response.body).toHaveProperty('x', 150);
+                expect(response.body).toHaveProperty('calories', 150);
       })
     })
     // sad path
