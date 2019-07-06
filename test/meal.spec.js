@@ -106,14 +106,22 @@ describe('api', () => {
                   if(meal.id === meal2.id){
                     expect(meal.name).toBe("meal2");
                     expect(meal.foods).toHaveLength(2);
-                    expect(meal.foods[0]).toHaveProperty("name", "food2");
-                    expect(meal.foods[0]).toHaveProperty("calories", 200);
+                    for (let food of meal.foods ){
+                      if(food.name === "food2"){
+                        expect(food.calories).toBe(200);
+                      }
+                      else if (food.name === "food3") {
+                        expect(food.calories).toBe(300)
+                      } else {
+                        expect(false).toBe(true)
+                      }
+                    }
                   }
                 }
               })
     })
 
-    test.only( 'GET /api/v1/meals/:meal_id/foods', async function(){
+    test( 'GET /api/v1/meals/:meal_id/foods', async function(){
       let meal2 = await Meal.create(
         {"name":"meal2",
         foods : [
@@ -125,7 +133,6 @@ describe('api', () => {
           as: 'foods'
         }]}
       );
-      console.log(meal2.id)
 
       return request(app)
               .get(`/api/v1/meals/${meal2.id}/foods`)
@@ -135,10 +142,38 @@ describe('api', () => {
                 expect(response.body).toHaveProperty('name', meal2.name);
                 expect(response.body).toHaveProperty('foods');
                 expect(response.body.foods).toHaveLength(2);
-                expect(response.body.foods[0]).toHaveProperty("name", "food2");
-                expect(response.body.foods[0]).toHaveProperty("calories", 200);
-                expect(response.body.foods[1]).toHaveProperty("name", "food3");
-                expect(response.body.foods[1]).toHaveProperty("calories", 300);
+
+                for (let food of response.body.foods ){
+                  if(food.name === "food2"){
+                    expect(food.calories).toBe(200);
+                  }
+                  else if (food.name === "food3") {
+                    expect(food.calories).toBe(300)
+                  } else {
+                    expect(false).toBe(true)
+                  }
+                }
+              })
+    })
+
+    test( 'GET /api/v1/meals/:meal_id/foods -- Failure', async function(){
+      let meal2 = await Meal.create(
+        {"name":"meal2",
+        foods : [
+          {"name":"food2", "calories":200},
+          {"name":"food3", "calories":300}
+        ]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+
+      return request(app)
+              .get(`/api/v1/meals/-1/foods`)
+              .then( response => {
+                expect(response.statusCode).toBe(404);
+                expect(response.body).toHaveProperty('error', "Invalid Parameters");
               })
     })
 
