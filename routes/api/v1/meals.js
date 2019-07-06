@@ -13,7 +13,6 @@ router.post('/:meal_id/foods/:id', async function(req, res, next){
       await MealFood.create({FoodId: food.id, MealId: meal.id})
       res.setHeader(...defaultHeader);
       let message = `Successfully added ${food.name} to ${meal.name}`
-      console.log(message);
       res.status(201).send({message: message});
     } else {
       throw "Invalid Parameters"
@@ -42,6 +41,30 @@ router.get('/', async function(req, res, next){
   res.setHeader(...defaultHeader);
   res.status(200).send(meals);
 
+})
+
+router.get('/:meal_id/foods', async function(req, res, next){
+  res.setHeader(...defaultHeader)
+  try {
+    let meal = await Meal.findByPk(req.params.meal_id, {
+      attributes: [ "id", "name"],
+      include: [{
+        model: Food,
+        as: 'foods',
+        attributes:["id","name", "calories"],
+        through: {
+          attributes:[]
+        }
+      }]
+    });
+    if(meal!= null){ res.status(200).send(meal);}
+    else{
+      throw "Invalid Parameters";
+    }
+  }
+  catch (error){
+    res.status(404).send({error: error});
+  }
 })
 
 module.exports = router;
