@@ -63,13 +63,15 @@ describe('api', () => {
       let apple_params = {"name": "Apple", "calories": 100};
       let banana = await Food.create(banana_params);
       let apple = await Food.create(apple_params);
-      let foods = await Food.findAll();
 
       return request(app)
               .get('/api/v1/foods')
-              .then(response => {
-                expect(response.statusCode).toBe(200);
-                expect(response.body).toHaveLength(foods.length);
+              .then(async (response) => {
+                Food.findAll().then(foods =>{
+
+                  expect(response.statusCode).toBe(200);
+                  expect(response.body).toHaveLength(foods.length);
+                });
 
                 // for (let food of response.body){}
                 // expect(response.body[0]).toHaveProperty('id', 1);
