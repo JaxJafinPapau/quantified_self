@@ -198,7 +198,7 @@ describe('api', () => {
                 expect(response.statusCode).toBe(204);
 
                 let remainingFoods = await meal2.getFoods({through: MealFood});
-                expect(remainginFoods).toHaveLength(1);
+                expect(remainingFoods).toHaveLength(1);
               })
 
     })
