@@ -177,6 +177,32 @@ describe('api', () => {
               })
     })
 
+    test.only( 'DELETE /api/v1/meals/:meal_id/foods/:id', async function(){
+      let meal2 = await Meal.create(
+        {"name":"meal2",
+        foods : [
+          {"name":"food2", "calories":200},
+          {"name":"food3", "calories":300}
+        ]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+
+      let foods = await meal2.getFoods({through: MealFood});
+
+      return request(app)
+              .delete(`/api/v1/meals/${meal2.id}/foods/${foods[0].id}`)
+              .then( async (response) => {
+                expect(response.statusCode).toBe(204);
+
+                let remainingFoods = await meal2.getFoods({through: MealFood});
+                expect(remainginFoods).toHaveLength(1);
+              })
+
+    })
+
   })
 
 });
