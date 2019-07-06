@@ -93,8 +93,8 @@ describe('api', () => {
     })
     // sad path
     test('GET /api/v1/foods/:id with non-existant id', async function(){
-      let banana_params = {"name": "Banana", "calories": 150, "id" : 1};
-      let apple_params = {"name": "Apple", "calories": 100, "id" : 2};
+      let banana_params = {"name": "Banana", "calories": 150};
+      let apple_params = {"name": "Apple", "calories": 100};
       let banana = await Food.create(banana_params);
       let apple = await Food.create(apple_params);
 

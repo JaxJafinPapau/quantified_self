@@ -6,7 +6,6 @@ var MealFood = require('../../../models').MealFood;
 var defaultHeader = ["Content-Type", "application/json"];
 
 router.post('/:meal_id/foods/:id', async function(req, res, next){
-  console.log("HERE", req.params);
   try{
     let meal = await Meal.findByPk(req.params.meal_id);
     let food = await Food.findByPk(req.params.id);
@@ -23,6 +22,26 @@ router.post('/:meal_id/foods/:id', async function(req, res, next){
     res.setHeader(...defaultHeader);
     res.status(404).send({ error: error});
   }
+})
+
+router.get('/', async function(req, res, next){
+  let meals = await Meal.findAll(
+    {
+      attributes: [ "id", "name"],
+      include: [{
+        model: Food,
+        as: 'foods',
+        attributes:["id","name", "calories"],
+        through: {
+          attributes:[]
+        }
+      }]
+    }
+  )
+
+  res.setHeader(...defaultHeader);
+  res.status(200).send(meals);
+
 })
 
 module.exports = router;

@@ -75,20 +75,25 @@ describe('api', () => {
     test('Get /api/v1/meals', async function(){
       let meal1 = await Meal.create(
         {"name":"meal1",
-        Food: [{"name":"food1", "calories":100}]},
-        {include: [Food]}
+        foods : [{"name":"food1", "calories":100}]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
       );
       let meal2 = await Meal.create(
         {"name":"meal2",
-        Food: [
+        foods : [
           {"name":"food2", "calories":200},
           {"name":"food3", "calories":300}
         ]},
-        {include: [Food]}
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
       );
 
-      let meals = Meal.findAll()
-      
+      let meals = await Meal.findAll()
       return request(app)
               .get('/api/v1/meals')
               .then( response => {
@@ -99,7 +104,7 @@ describe('api', () => {
                     expect(meal.name).toBe("meal2");
                     expect(meal.foods).toHaveLength(2);
                     expect(meal.foods[0]).toHaveProperty("name", "food2");
-                    expect(meal.foods[0]).toHaveProperty("calories", "300");
+                    expect(meal.foods[0]).toHaveProperty("calories", 200);
                   }
                 }
               })
