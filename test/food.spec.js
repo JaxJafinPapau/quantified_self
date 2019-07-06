@@ -15,13 +15,14 @@ describe('api', () => {
   describe('Test Food Paths', () => {
     beforeAll(async () => {
       await shell.exec('npx sequelize db:create', {silent: true})
-    });
-    beforeEach(async () => {
       await shell.exec('npx sequelize db:migrate', {silent: true})
     });
-    afterEach(async () => {
-      await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
-    });
+    // beforeEach(async () => {
+    // });
+    // afterEach(async () => {
+    //   await Food.destroy({truncate: true})
+    //   // await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
+    // });
     test('POST /api/v1/foods with correct params', () => {
       let body = {
         "food" : {

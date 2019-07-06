@@ -10,13 +10,16 @@ describe('api', () => {
   describe('Test Meal Paths', () => {
     beforeAll(async () => {
       await shell.exec('npx sequelize db:create', {silent: true})
-    });
-    beforeEach(async () => {
       await shell.exec('npx sequelize db:migrate', {silent: true})
     });
-    afterEach(async () => {
-      await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
-    });
+    // beforeEach(async () => {
+    // });
+    // afterEach(async () => {
+    //   await Food.destroy({truncate: true})
+    //   await MealFood.destroy({truncate: true})
+    //   await Meal.destroy({truncate: true})
+    //   // await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
+    // });
     test('POST /api/v1/meals/:meal_id/foods/:id--success', async function() {
       let meal = await Meal.create({"name":"breakfast"});
       let food = await Food.create({"name":"food1", "calories":100});

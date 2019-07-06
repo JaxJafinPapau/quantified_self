@@ -1,2 +1,8 @@
 var {sequelize} = require('../models');
-module.exports = async () => { sequelize.close()}
+var shell = require('shelljs');
+
+module.exports = async () => {
+  sequelize.close();
+  await shell.exec('npx sequelize db:drop', {silent: true});
+
+}
