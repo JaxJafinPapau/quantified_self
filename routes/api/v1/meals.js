@@ -17,11 +17,11 @@ router.post('/:meal_id/foods/:id', async function(req, res, next){
       console.log(message);
       res.status(201).send({message: message});
     } else {
-      reject();
+      throw "Invalid Parameters"
     }
-  } catch {
+  } catch (error){
     res.setHeader(...defaultHeader);
-    res.status(404).send({ error: "Invalid Parameters" });
+    res.status(404).send({ error: error});
   }
 })
 
