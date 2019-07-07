@@ -57,12 +57,30 @@ router.get('/:meal_id/foods', async function(req, res, next){
         }
       }]
     });
-    if(meal!= null){ res.status(200).send(meal);}
-    else{
-      throw "Invalid Parameters";
-    }
+    if(meal!= null){ res.status(200).send(meal); }
+    else{ throw "Invalid Parameters"; }
   }
   catch (error){
+    res.status(404).send({error: error});
+  }
+})
+
+router.delete('/:meal_id/foods/:id', async function(req, res, next){
+  res.setHeader(...defaultHeader);
+  try{
+  let meal = await Meal.findByPk(req.params.meal_id);
+  let food = await Food.findByPk(req.params.id);
+  let connection = await MealFood.findOne({where:
+    {FoodId: req.params.id, MealId: req.params.meal_id}
+  });
+
+  if (meal == null || food == null || connection == null){
+    throw "Invalid Parameters";
+  } else {
+    connection.destroy();
+    res.status(204).send();
+  }}
+  catch (error) {
     res.status(404).send({error: error});
   }
 })

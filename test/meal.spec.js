@@ -177,6 +177,104 @@ describe('api', () => {
               })
     })
 
+    test( 'DELETE /api/v1/meals/:meal_id/foods/:id', async function(){
+      let meal2 = await Meal.create(
+        {"name":"meal2",
+        foods : [
+          {"name":"food2", "calories":200},
+          {"name":"food3", "calories":300}
+        ]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+
+      let foods = await meal2.getFoods({through: MealFood});
+
+      return request(app)
+              .delete(`/api/v1/meals/${meal2.id}/foods/${foods[0].id}`)
+              .then( async (response) => {
+                expect(response.statusCode).toBe(204);
+
+                let remainingFoods = await meal2.getFoods({through: MealFood});
+                expect(remainingFoods).toHaveLength(1);
+              })
+
+    })
+
+    test( 'DELETE /api/v1/meals/:meal_id/foods/:id invalid meal_id', async function(){
+      let meal2 = await Meal.create(
+        {"name":"meal2",
+        foods : [
+          {"name":"food2", "calories":200},
+          {"name":"food3", "calories":300}
+        ]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+
+      let foods = await meal2.getFoods({through: MealFood});
+
+      return request(app)
+              .delete(`/api/v1/meals/-1/foods/${foods[0].id}`)
+              .then( async (response) => {
+                expect(response.statusCode).toBe(404);
+                expect(response.body).toHaveProperty('error', "Invalid Parameters")
+              })
+
+    })
+
+    test( 'DELETE /api/v1/meals/:meal_id/foods/:id invalid food id', async function(){
+      let meal2 = await Meal.create(
+        {"name":"meal2",
+        foods : [
+          {"name":"food2", "calories":200},
+          {"name":"food3", "calories":300}
+        ]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+
+      let foods = await meal2.getFoods({through: MealFood});
+
+      return request(app)
+              .delete(`/api/v1/meals/${meal2.id}/foods/-1`)
+              .then( async (response) => {
+                expect(response.statusCode).toBe(404);
+                expect(response.body).toHaveProperty('error', "Invalid Parameters")
+              })
+
+    })
+
+    test( 'DELETE /api/v1/meals/:meal_id/foods/:id no valid id', async function(){
+      let meal2 = await Meal.create(
+        {"name":"meal2",
+        foods : [
+          {"name":"food2", "calories":200},
+          {"name":"food3", "calories":300}
+        ]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+
+      let foods = await meal2.getFoods({through: MealFood});
+
+      return request(app)
+              .delete(`/api/v1/meals/-1/foods/-1`)
+              .then( async (response) => {
+                expect(response.statusCode).toBe(404);
+                expect(response.body).toHaveProperty('error', "Invalid Parameters")
+              })
+
+    })
+
   })
 
 });
