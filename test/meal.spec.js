@@ -10,13 +10,16 @@ describe('api', () => {
   describe('Test Meal Paths', () => {
     beforeAll(async () => {
       await shell.exec('npx sequelize db:create', {silent: true})
-    });
-    beforeEach(async () => {
       await shell.exec('npx sequelize db:migrate', {silent: true})
     });
-    afterEach(async () => {
-      await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
-    });
+    // beforeEach(async () => {
+    // });
+    // afterEach(async () => {
+    //   await Food.destroy({truncate: true})
+    //   await MealFood.destroy({truncate: true})
+    //   await Meal.destroy({truncate: true})
+    //   // await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
+    // });
     test('POST /api/v1/meals/:meal_id/foods/:id--success', async function() {
       let meal = await Meal.create({"name":"breakfast"});
       let food = await Food.create({"name":"food1", "calories":100});
@@ -69,6 +72,44 @@ describe('api', () => {
               .then(response => {
                 expect(response.statusCode).toBe(404);
                 expect(response.body).toHaveProperty("error", "Invalid Parameters");
+              })
+    })
+
+    test('Get /api/v1/meals', async function(){
+      let meal1 = await Meal.create(
+        {"name":"meal1",
+        foods : [{"name":"food1", "calories":100}]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+      let meal2 = await Meal.create(
+        {"name":"meal2",
+        foods : [
+          {"name":"food2", "calories":200},
+          {"name":"food3", "calories":300}
+        ]},
+        {include: [{
+          model: Food,
+          as: 'foods'
+        }]}
+      );
+
+      let meals = await Meal.findAll()
+      return request(app)
+              .get('/api/v1/meals')
+              .then( response => {
+                expect(response.statusCode).toBe(200);
+                expect(response.body).toHaveLength(meals.length);
+                for (let meal of response.body ){
+                  if(meal.id === meal2.id){
+                    expect(meal.name).toBe("meal2");
+                    expect(meal.foods).toHaveLength(2);
+                    expect(meal.foods[0]).toHaveProperty("name", "food2");
+                    expect(meal.foods[0]).toHaveProperty("calories", 200);
+                  }
+                }
               })
     })
 

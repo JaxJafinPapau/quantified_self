@@ -15,13 +15,14 @@ describe('api', () => {
   describe('Test Food Paths', () => {
     beforeAll(async () => {
       await shell.exec('npx sequelize db:create', {silent: true})
-    });
-    beforeEach(async () => {
       await shell.exec('npx sequelize db:migrate', {silent: true})
     });
-    afterEach(async () => {
-      await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
-    });
+    // beforeEach(async () => {
+    // });
+    // afterEach(async () => {
+    //   await Food.destroy({truncate: true})
+    //   // await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
+    // });
     test('POST /api/v1/foods with correct params', () => {
       let body = {
         "food" : {
@@ -93,8 +94,8 @@ describe('api', () => {
     })
     // sad path
     test('GET /api/v1/foods/:id with non-existant id', async function(){
-      let banana_params = {"name": "Banana", "calories": 150, "id" : 1};
-      let apple_params = {"name": "Apple", "calories": 100, "id" : 2};
+      let banana_params = {"name": "Banana", "calories": 150};
+      let apple_params = {"name": "Apple", "calories": 100};
       let banana = await Food.create(banana_params);
       let apple = await Food.create(apple_params);
 
