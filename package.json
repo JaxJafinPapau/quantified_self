@@ -2,8 +2,8 @@
   "name": "quantified-self",
   "version": "0.0.0",
   "private": true,
-  "jest" : {
-    "globalTeardown":"<rootDir>/test/teardown.js"
+  "jest": {
+    "globalTeardown": "<rootDir>/test/teardown.js"
   },
   "scripts": {
     "start": "node ./bin/www",
@@ -16,7 +16,6 @@
     "express": "^4.16.4",
     "morgan": "~1.9.1",
     "pg": "^7.11.0",
-    "pryjs": "^1.0.3",
     "sequelize": "^5.9.0",
     "sequelize-cli": "^5.5.0",
     "babel-jest": "^24.8.0",
@@ -24,5 +23,6 @@
     "supertest": "^4.0.2"
   },
   "devDependencies": {
+    "pryjs": "^1.0.3"
   }
 }
