@@ -13,19 +13,13 @@ describe('api', () => {
     await sequelize.close();
     await shell.exec('npx sequelize db:drop', {silent: true});
   })
+
   describe('Test Meal Paths', () => {
     beforeAll(async () => {
       await shell.exec('npx sequelize db:create', {silent: true})
       await shell.exec('npx sequelize db:migrate', {silent: true})
     });
-    // beforeEach(async () => {
-    // });
-    // afterEach(async () => {
-    //   await Food.destroy({truncate: true})
-    //   await MealFood.destroy({truncate: true})
-    //   await Meal.destroy({truncate: true})
-    //   // await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
-    // });
+
     test('POST /api/v1/meals/:meal_id/foods/:id--success', async function() {
       let meal = await Meal.create({"name":"breakfast"});
       let food = await Food.create({"name":"food1", "calories":100});
@@ -288,12 +282,7 @@ describe('api', () => {
       await shell.exec('npx sequelize db:create', {silent: true})
       await shell.exec('npx sequelize db:migrate', {silent: true})
     });
-    // beforeEach(async () => {
-    // });
-    // afterEach(async () => {
-    //   await Food.destroy({truncate: true})
-    //   // await shell.exec('npx sequelize db:migrate:undo:all', {silent: true})
-    // });
+
     test('POST /api/v1/foods with correct params', () => {
       let body = {
         "food" : {
@@ -312,7 +301,7 @@ describe('api', () => {
                 expect(response.body).toHaveProperty('calories', 150);
       })
     })
-    // sad path
+
     test('POST /api/v1/foods with incorrect params', () => {
       let body = {
         "food" : {
@@ -343,10 +332,6 @@ describe('api', () => {
                   expect(response.statusCode).toBe(200);
                   expect(response.body).toHaveLength(foods.length);
                 });
-
-                // for (let food of response.body){}
-                // expect(response.body[0]).toHaveProperty('id', 1);
-                // expect(response.body[1]).toHaveProperty('id',2);
               })
     })
 

@@ -35,12 +35,11 @@ router.get('/:id', async function(req, res, next){
       res.setHeader(...defaultHeader);
       res.status(200).send(JSON.stringify(food));
     } else {
-      // proceed to catch block
-      reject();
+      throw "Invalid food ID";
     }
   } catch (error) {
     res.setHeader(...defaultHeader);
-    res.status(400).send({ error: "Invalid food ID" });
+    res.status(400).send({ error: error });
   }
 })
 
