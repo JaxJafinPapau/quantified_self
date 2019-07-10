@@ -278,3 +278,34 @@ Upon success:
 Status -- 200
 
 Recipes serialized as [described above](#recipe-serialization)  
+
+
+**`GET /api/v1/recipes/avg_calories?q=food_type`**:  
+
+Returns the average calories per serving of recipes associated with a given food type.  
+
+The food type is specified by adding the query string `q`. `q` must be a string corresponding to a food contained in the database. For example, to search for recipes with chicken, the request to make is `GET /api/v1/recipes/avg_calories?q=chicken`
+
+Upon success:  
+Status -- 200
+
+```
+{
+  data:
+    {
+        food: food_type,
+        avg_calories: average calories //float
+    }
+}
+```
+
+**`GET /api/v1/recipes/order_by_calories?q=food_type`**:  
+
+Returns the recipes associated with a given food type, ordered by calories per serving; ascending.  
+
+The food type is specified by adding the query string `q`. `q` must be a string corresponding to a food contained in the database. For example, to search for recipes with chicken, the request to make is `GET /api/v1/recipes/order_by_calories?q=chicken`
+
+Upon success:  
+Status -- 200
+
+Recipes serialized as [described above](#recipe-serialization)  
