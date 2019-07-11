@@ -1,9 +1,13 @@
 # Quantified Self
+
 ## Turing School Project
 [Original Project Description](https://backend.turing.io/module4/projects/quantified_self/qs_server_side)
 
-### Authors:
+### Core Contributors:
 [Jeremy Bennett](https://github.com/JaxJafinPapau); [William Peterson](https://github.com/wipegup)
+
+#### How to Contribute
+Please follow the [Initial Setup](#initial-setup) guide and then submit a pull request.
 
 ## Contents:
 - [Introduction](#introduction)
@@ -15,6 +19,21 @@ This project involves creating useful endpoints for a calorie tracker applicatio
 The code represented by [this current repo](https://github.com/JaxJafinPapau/quantified_self) keeps track of foods and the meals that may incorporate those foods. It may be found in production [here](https://qs-jb-wp.herokuapp.com/).  
 
 The code found at [this repo](https://github.com/JaxJafinPapau/q_self_edamam_microsvc) acts as a microservice, leveraging the [Edamam](https://www.edamam.com/) API to find recepies for the foods stored in the main application. It may be found in production [here](https://frozen-ocean-70450.herokuapp.com/)
+
+## Initial Setup
+
+To run on your local machine, please FORK then clone this repository.
+Please ensure you have the latest version of npm found [here](https://docs.npmjs.com/getting-started/).
+In a unix terminal, from the directory into which you cloned this repo, you may then run the commands:
+`npm install`
+`npx sequelize db:create`
+`npx sequelize db:migrate`
+`npx sequelize db:seed:all`
+`npm start`
+
+Then use postman or a browser to visit the API endpoints as listed below. The default development environment runs on:
+
+`localhost:3000/`
 
 ## API Endpoints
 [Quantified Self](#quantified-self-endpoints)  
@@ -308,4 +327,19 @@ The food type is specified by adding the query string `q`. `q` must be a string 
 Upon success:  
 Status -- 200
 
-Recipes serialized as [described above](#recipe-serialization)  
+Recipes serialized as [described above](#recipe-serialization)
+
+## Running Tests
+
+To run the test suite, after you have run `npm install` run `npm test`. To generate coverage reports you may run `jest --coverage`.
+
+## Schema Design
+
+This repository has primary tables of Foods and Meals, with a joins table of MealFoods to connect the many to many relationship. The microservice has a single table of Recipes.
+
+## Tech Stack
+
+- Node.js
+- Express.js
+- Sequelize
+- Jest

@@ -24,6 +24,5 @@
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "pryjs": "^1.0.3"
   }
 }
